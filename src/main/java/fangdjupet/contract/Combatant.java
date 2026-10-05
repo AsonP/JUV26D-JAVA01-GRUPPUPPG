@@ -13,6 +13,9 @@ public interface Combatant {
     /** Minskar hälsan med angiven mängd, dock aldrig under 0. */
     void takeDamage(int amount);
 
+    /** Anfaller målet och returnerar skadan som gjordes. */
+    int attack(Combatant target);
+
     default boolean isAlive() {
         return getHealth() > 0;
     }

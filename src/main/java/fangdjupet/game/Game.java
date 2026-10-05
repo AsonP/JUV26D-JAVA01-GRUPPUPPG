@@ -1,5 +1,6 @@
 package fangdjupet.game;
 
+import fangdjupet.combat.Battle;
 import fangdjupet.contract.Combatant;
 import fangdjupet.contract.GameEvent;
 import fangdjupet.contract.GameEventListener;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class Game {
     private final List<GameEventListener> listeners = new ArrayList<>();
     private final Deque<Combatant> enemies = new ArrayDeque<>();
+    private final Battle battle = new Battle(this::publish);
     private Combatant hero;
 
     public void addListener(GameEventListener listener) {
@@ -55,6 +57,15 @@ public class Game {
 
     public int getRemainingEnemyCount() {
         return enemies.size();
+    }
+
+    /** Kör en stridsrunda mot nuvarande fiende. */
+    public void fightRound() {
+        if (!hasActiveAdventure() || isOver()) {
+            throw new IllegalStateException("Inget pågående äventyr att strida i");
+        }
+        battle.fightRound(hero, enemies.peekFirst());
+        removeDefeatedEnemy();
     }
 
     /** Tar bort nuvarande fiende ur kön om den är besegrad. */

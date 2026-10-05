@@ -1,4 +1,4 @@
-package fangdjupet;
+package fangdjupet.combat;
 
 import fangdjupet.contract.AttackStrategy;
 import fangdjupet.contract.Combatant;
@@ -72,6 +72,7 @@ public abstract class BaseCharacter implements Combatant {
     }
 
     /** Anfaller målet med nuvarande strategi och returnerar skadan som gjordes. */
+    @Override
     public int attack(Combatant target) {
         int damage = attackStrategy.calculateDamage(this, target);
         target.takeDamage(damage);

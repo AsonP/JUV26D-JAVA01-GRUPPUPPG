@@ -1,5 +1,7 @@
 package fangdjupet.game;
 
+import fangdjupet.contract.Combatant;
+
 import java.util.Scanner;
 
 /**
@@ -50,7 +52,13 @@ public class Menu {
     }
 
     private void startNewAdventure() {
-        notImplemented("Starta nytt äventyr");
+        System.out.print("Vad heter din hjälte? ");
+        String name = scanner.hasNextLine() ? scanner.nextLine() : "";
+        game.startNewAdventure(AdventureSetup.createHero(name), AdventureSetup.createEnemies());
+
+        Combatant hero = game.getHero().orElseThrow();
+        System.out.println(hero.getName() + " kliver ner i Fångdjupet. "
+                + game.getRemainingEnemyCount() + " fiender väntar.");
     }
 
     private void continueSavedAdventure() {
@@ -64,8 +72,29 @@ public class Menu {
     }
 
     private void fightNextEnemy() {
-        if (requireActiveAdventure()) {
-            notImplemented("Strid mot nästa fiende");
+        if (!requireActiveAdventure()) {
+            return;
+        }
+        if (game.isOver()) {
+            System.out.println("Äventyret är slut. Starta ett nytt för att spela igen.");
+            return;
+        }
+
+        Combatant enemy = game.getCurrentEnemy().orElseThrow();
+        System.out.println("Du möter " + enemy.getName() + "!");
+        game.fightRound();
+        printOutcome();
+    }
+
+    private void printOutcome() {
+        Combatant hero = game.getHero().orElseThrow();
+        if (!hero.isAlive()) {
+            System.out.println("Du förlorade. Fångdjupet tog ännu en hjälte.");
+        } else if (game.isOver()) {
+            System.out.println("Seger! " + hero.getName() + " har besegrat alla fiender.");
+        } else {
+            System.out.println(hero.getName() + " har " + hero.getHealth() + "/" + hero.getMaxHealth()
+                    + " i hälsa. Fiender kvar: " + game.getRemainingEnemyCount());
         }
     }
 
