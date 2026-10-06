@@ -1,4 +1,4 @@
-package fangdjupet;
+package fangdjupet.combat;
 
 import org.junit.jupiter.api.Test;
 

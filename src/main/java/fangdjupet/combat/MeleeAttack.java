@@ -1,4 +1,4 @@
-package fangdjupet;
+package fangdjupet.combat;
 
 import fangdjupet.contract.AttackStrategy;
 import fangdjupet.contract.Combatant;
